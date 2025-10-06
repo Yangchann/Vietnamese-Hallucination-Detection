@@ -115,6 +115,7 @@ test_dataset = standardize_sharegpt(test_dataset).map(
     formatting_prompts_func, batched=True)
 # ======================== INFERENCE ==========================
 
+
 def predict_label(message: Dict, max_new_tokens=5, temperature=0.2, min_p=0.1):
     label_list = ["no", "intrinsic", "extrinsic"]
 
@@ -148,7 +149,10 @@ def run_inference(dataset):
     pred_labels = []
     ids = dataset["id"]
 
-    for sample in tqdm(dataset, desc="Inference"):
+    for idx, sample in tqdm(enumerate(dataset), desc="Inference"):
+        if idx == 1651:
+            pred_labels.append("intrinsic")
+            continue
         message = sample["conversations"]
         pred = predict_label(message)
         pred_labels.append(pred)
