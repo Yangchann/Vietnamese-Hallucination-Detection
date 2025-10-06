@@ -23,7 +23,7 @@ HF_TOKEN = "place hf token"
 WANDB_KEY = "place wandb key"
 
 # ========== Dataset ==========
-DATA_DIR = "./DSC2025"
+DATA_DIR = "data"
 TRAIN_FILE = f"{DATA_DIR}/vihallu-train.csv"
 TEST_FILE = f"{DATA_DIR}/vihallu-public-test.csv"
 TEST_SIZE = 0.1
@@ -74,7 +74,7 @@ LABEL_LIST = ["no", "intrinsic", "extrinsic"]
 EOS_TOKEN = None  # sẽ gán sau khi load tokenizer
 
 # ========== Inference ==========
-INFER_MODEL_DIR = "/checkpoints/Qwen2.5-7B"  # model đã fine-tuned hoặc base
+INFER_MODEL_DIR = "./checkpoints/Qwen2.5-7B"  # model đã fine-tuned hoặc base
 PRIVATE_TEST_FILE = f"{DATA_DIR}/vihallu-private-test.csv"
 INFER_BATCH_SIZE = 4
 MAX_NEW_TOKENS = 10

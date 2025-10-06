@@ -4,7 +4,13 @@ import pandas as pd
 from tqdm import tqdm
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from src.configs.config_qwen25_7b import *
+import sys
+import os 
+
+current_dir = os.path.dirname(__file__)  # .../src/models/qwen25
+src_root = os.path.abspath(os.path.join(current_dir, "../.."))  # .../Src
+sys.path.append(src_root)
+from configs.config_qwen25_7b import *
 
 # ========== Load model & tokenizer ==========
 tokenizer = AutoTokenizer.from_pretrained(INFER_MODEL_DIR, use_fast=True)

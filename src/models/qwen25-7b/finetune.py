@@ -15,7 +15,13 @@ from trl import SFTTrainer
 from datasets import load_dataset
 from huggingface_hub import login
 
-from src.configs.config_qwen25_7b import * 
+import sys
+import os 
+
+current_dir = os.path.dirname(__file__)  # .../src/models/qwen25
+src_root = os.path.abspath(os.path.join(current_dir, "../.."))  # .../Src
+sys.path.append(src_root)
+from configs.config_qwen25_7b import *
 
 # ========== Logging ==========
 sys.stdout = open("train_log.txt", "w", buffering=1)
