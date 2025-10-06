@@ -47,8 +47,8 @@ TRAIN_DEFAULTS = {
 
 # Data paths
 DATA_DEFAULTS = {
-    "train_csv": "./DSC2025/final_data.csv",
-    "test_csv": "./DSC2025/vihallu-private-test.csv",
+    "train_csv": "./data/vihallu-train.csv",
+    "test_csv": "./data/vihallu-private-test.csv",
     "output_dir": "output_trainfull",
     "submit_path": "submit_train_full.csv",
 }
@@ -56,13 +56,13 @@ DATA_DEFAULTS = {
 
 # Optional pretrained checkpoints for inference-only (downloadable via gdown)
 CHECKPOINTS = {
-    "qwen3-4b-instruct-2507-int8": "https://drive.google.com/drive/folders/1KUHXDIBJceogK_jv2cfom93nr-XMZ3F_",
-    "qwen3-4b-thinking-2507-int8": "https://drive.google.com/drive/folders/15633woddq-sSQC_hvxwRDVXMCbPC3KvA",
-    "qwen3-4b-instruct-2507-full": "https://drive.google.com/drive/folders/1lxuAcfzNV4fVrOOrsQ9EgXBAEzBdmU4_",
+    "qwen3-4b-instruct-2507-int8": "Qwen3-4B-Instruction-8bit",
+    "qwen3-4b-thinking-2507-int8": "Qwen3-4B-Instruction-full",
+    "qwen3-4b-instruct-2507-full": "Qwen3-4B-Thinking",
 }
 
 # Where to store downloaded checkpoints
-CHECKPOINTS_DIR = os.environ.get("CHECKPOINTS_DIR", "./checkpoints")
+CHECKPOINTS_DIR = os.environ.get("CHECKPOINTS_DIR", "checkpoints")
 
 
 def resolve_model_config(model_key: str):

@@ -39,18 +39,8 @@ resolved = cfg_module.resolve_model_config(args.model_name) if hasattr(cfg_modul
 
 # If model_name is a known checkpoint key, download via gdown to local dir and use that path
 ckpt_map = getattr(cfg_module, "CHECKPOINTS", {})
-ckpt_dir_root = getattr(cfg_module, "CHECKPOINTS_DIR", "./checkpoints")
-os.makedirs(ckpt_dir_root, exist_ok=True)
-model_dir_override = None
-if args.model_name in ckpt_map:
-    url = ckpt_map[args.model_name]
-    out_dir = os.path.join(ckpt_dir_root, args.model_name)
-    zip_path = os.path.join(ckpt_dir_root, f"{args.model_name}.zip")
-    if not os.path.exists(out_dir):
-        print(f"Downloading checkpoint for {args.model_name} ...")
-        gdown.download(url, zip_path, quiet=False)
-        os.system(f"unzip -o \"{zip_path}\" -d \"{out_dir}\"")
-    model_dir_override = out_dir
+ckpt_dir_root = getattr(cfg_module, "CHECKPOINTS_DIR", "checkpoints")
+model_dir = os.path.join(ckpt_dir_root, ckpt_map.get(args.model_name))
 
 # =============== LOAD DATASET ===============
 base_prompt_style = """Instruction:
@@ -114,7 +104,7 @@ def run_inference(model_dir, use_8bit=True):
     return pd.DataFrame({"id": test_dataset["id"], "predict_label": preds})
 
 use_8bit = bool(resolved.get("load_in_8bit", True))
-model_source = model_dir_override if model_dir_override else resolved["model_name"]
+model_source = model_dir if model_dir else resolved["model_name"]
 df = run_inference(model_source, use_8bit=use_8bit)
 submit_path = args.submit_path or getattr(cfg_module, "DATA_DEFAULTS", {}).get("submit_path", "submit.csv")
 df.to_csv(submit_path, index=False)
