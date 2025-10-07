@@ -5,9 +5,9 @@ import random
 
 # ========== 1. Run inference for Llama models ==========
 llama_cmds = [
-    "python src/models/llama/inference.py --config src/configs/config_llama.py --model_name Llama32-3B-4bit --test_csv data/vihallu-private-test.csv --submit_path submit-Llama32-3B-4bit.csv",
-    "python src/models/llama/inference.py --config src/configs/config_llama.py --model_name Llama32-3B-16bit --test_csv data/vihallu-private-test.csv --submit_path submit-Llama32-3B-16bit.csv",
-    "python src/models/llama/inference.py --config src/configs/config_llama.py --model_name Llama2-7B-16bit --test_csv data/vihallu-private-test.csv --submit_path submit-Llama2-7B-16bit.csv",
+    "python src/models/Llama/inference.py --config src/configs/config_llama.py --model_name Llama32-3B-4bit --test_csv data/vihallu-private-test.csv --submit_path submit-Llama32-3B-4bit.csv",
+    "python src/models/Llama/inference.py --config src/configs/config_llama.py --model_name Llama32-3B-16bit --test_csv data/vihallu-private-test.csv --submit_path submit-Llama32-3B-16bit.csv",
+    "python src/models/Llama/inference.py --config src/configs/config_llama.py --model_name Llama2-7B-16bit --test_csv data/vihallu-private-test.csv --submit_path submit-Llama2-7B-16bit.csv",
 ]
 
 print("🔹 Running Llama inferences...")
