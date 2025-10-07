@@ -1,3 +1,14 @@
+gdown
+wandb
+torch
+huggingface_hub
+pandas
+scikit-learn
+accelerate
+peft
+bitsandbytes
+transformers
+datasets
 unsloth
 transformers==4.55.4
 trl==0.22.2

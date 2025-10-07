@@ -1,4 +1,4 @@
-# Vietnamese Hallucination Detection
+# DSC2025 - Vietnamese Hallucination Detection
 
 ## 1. Project Overview
 
@@ -29,41 +29,79 @@ Vietnamese-Hallucination-Detection
 | |-- llama/
 | | |-- finetune.py
 | | |-- inference.py
-| | |-- README.md
 | |
 | |-- qwen3-4b/
 | | |-- finetune.py
 | | |-- inference.py
 | |
 | |-- qwen25-7b/
-| |-- finetune.py
-| |-- inference.py
+| | |-- finetune.py
+| | |-- inference.py
 |
 |-- requirements.txt
-|-- run_reference_and_ensemble.sh
+|-- run_reference_and_ensemble.py
 |-- README.md
 ```
 
 ---
 
-## 3. Checkpoints
+## 3. System Requirements
 
-Download all model checkpoints from the following link and place them in the `checkpoints/` directory: [**🗂️ Checkpoints (Google Drive)**](https://drive.google.com/drive/u/4/folders/16LOiPlNrREaae_moJL0dNZipGPTmLboJ)
+To ensure stable training and inference, we recommend the following setup:
 
+| Component | Minimum Requirement | Recommended Setup |
+|------------|--------------------|-------------------|
+| **Python** | 3.8+ | 3.10 |
+| **CUDA GPU** | Required | ✅ NVIDIA GPU with CUDA support |
+| **VRAM** | 16GB | 24GB+ (e.g., RTX 4090) |
+| **RAM** | 16GB | 32GB |
+| **Storage** | 200GB | 512GB SSD |
 
-## 4. Environment Setup
+> 💡 Example setup used in this project:
+> **GPU:** NVIDIA RTX 4090 (24GB VRAM)
+> **RAM:** 32GB
+> **Storage:** 512GB SSD
 
-We recommend using a **virtual environment** or **conda environment**.
-Make sure your PyTorch version is compatible with your local CUDA version.
+---
+
+## 4. Installation
+
+### Step 1: Clone Repository
+```bash
+git clone https://github.com/Yangchann/Vietnamese-Hallucination-Detection.git
+cd Vietnamese-Hallucination-Detection
+
+```
+
+### Step 2: Create Virtual Environment
+We recommend using a virtual environment or Conda environment. Make sure your PyTorch version is compatible with your local CUDA version.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate        # On Linux / macOS
+# .venv\Scripts\activate         # On Windows
+```
+
+### Step 3: Install Dependencies
+```bash
 pip install -U pip
 pip install -r requirements.txt
 ```
 
-## 5. Fine-tuning and Inference
+
+## 5. Checkpoints
+
+Download all model checkpoints from the following link and place them in the `checkpoints/` directory: [**🗂️ Checkpoints (Google Drive)**](https://drive.google.com/drive/u/4/folders/16LOiPlNrREaae_moJL0dNZipGPTmLboJ)
+
+```bash
+
+gdown --folder https://drive.google.com/drive/u/4/folders/16LOiPlNrREaae_moJL0dNZipGPTmLboJ -O ./checkpoints
+
+```
+
+
+
+## 6. Fine-tuning and Inference
 Each model directory (under ```src/models/```) contains two main scripts:
 
 - finetune.py — for supervised fine-tuning
@@ -77,47 +115,57 @@ a) LLaMA Models (src/models/llama)
 - Fine-tuning
 
 ```powershell
-python .\src\models\llama\finetune.py \
-        --config .\src\configs\config_llama.py \
+python src/models/llama/finetune.py \
+        --config src/configs/config_llama.py \
         --model_name your_model_name \
         --mode train \
-        --output_dir .\checkpoints\your_model_name
+        --output_dir checkpoints/your_model_name
 ```
 
 - Inference
 
 ```powershell
-python .\src\models\llama\inference.py \
-        --config .\src\configs\config_llama.py \
+python src/models/llama/inference.py \
+        --config src/configs/config_llama.py \
         --model_name your_model_name \
-        --test_csv .\data\example_test.csv \
-        --submit_path .\results\submit-model-name.csv
+        --test_csv data/vihallu-private-test.csv \
+        --submit_path /results/submit-model-name.csv
 ```
+Note: ```your_model_name``` including ```Llama32-3B-4bit```, L```lama32-3B-16bit```, and ```Llama2-7B-16bit```
+
 
 b) Qwen2.5-7B (`src/models/qwen25-7b`)
 - Finetune
 ```powershell
-python .\src\models\qwen25-7b\finetune.py
+python src/models/qwen25-7b/finetune.py
 ```
 - Inference
 ```powershell
-python .\src\models\qwen25-7b\inference.py
+python src/models/qwen25-7b/inference.py
 ```
 
 c) Qwen3-4B (`src/models/qwen3-4b`)
 
 - Finetune
 ```powershell
-
-
+python src/models/qwen3-4b/finetune.py \
+        --config src/configs/config_qwen3_4b.py \
+        --model_name your_model_name \
+        --mode train \
+        --output_dir checkpoints/your_model_name
 ```
 - Inference
 ```powershell
-
-
+python src/models/qwen3-4b/inference.py \
+        --config src/configs/config_qwen3_4b.py \
+        --model_name your_model_name \
+        --test_csv data/vihallu-private-test.csv \
+        --submit_path submit-model-name.csv
 ```
+Note: ```your_model_name``` including ```qwen3-4b-instruct-2507-int8```, ```qwen3-4b-instruct-2507-full```, and ```qwen3-4b-thinking-2507-int8```
 
-## 6. Ensemble Strategy
+
+## 7. Ensemble Strategy
 
 To improve prediction robustness, we adopt a **two-stage ensemble pipeline** that combines outputs from multiple fine-tuned models.
 
@@ -127,15 +175,15 @@ Each model family (LLaMA or Qwen) is ensembled internally to produce a more stab
 
 - 🦙 **LLaMA Ensemble**
   - Combine predictions from all LLaMA variants (e.g., `Llama3.2-3B-4bit`, `Llama3.2-3B-16bit`, `Llama2-7B-16bit`)
-  - Output: `results/llama_ensemble.csv`
+  - Output: `submit-Llama-Ensemble.csv`
 
 - 🧬 **Qwen3 Ensemble**
   - Combine predictions from all Qwen3 models (e.g., `Qwen3-4B`, `Qwen3-4B-Instruct`)
-  - Output: `results/qwen3_ensemble.csv`
+  - Output: `submit-Qwen3-Ensemble.csv`
 
 - ⚡ **Qwen2.5 Model**
   - Use one single result file from the Qwen2.5 model
-  - Output: `results/qwen25_result.csv`
+  - Output: `submit-qwen25-7b.csv`
 
 Each ensemble file is generated using **majority voting**.
 
@@ -146,10 +194,13 @@ At this level, we combine the first-stage results from all model families to for
 
 ---
 
-## 🚀 7. Inference all-in-one
+## 🚀 8. Inference all-in-one
 
 We provide a single shell script that automates inference and ensemble generation.
 
 ```bash
-bash run_reference_and_ensemble.sh
+python run_reference_and_ensemble.py
 ```
+
+
+**⚠️ Note: Due to non-deterministic sampling (```temperature``` > 0) and random tie-breaking during ensemble, final predictions may slightly differ across runs.**
