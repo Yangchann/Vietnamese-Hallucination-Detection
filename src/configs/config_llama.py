@@ -1,8 +1,10 @@
 import os
 import torch
 
+
 def get_default_seed() -> int:
     return int(os.environ.get("SEED", 2025))
+
 
 MODEL_REGISTRY = {
     # Llama-3.2-3B in 4-bit
@@ -67,7 +69,7 @@ DATA_DEFAULTS = {
 
 CHECKPOINTS = {
     "Llama32-3B-4bit": "Llama3.2-3B-Instruct-4bit",
-    "Llama32-3B-16bit": "Llama32-3B-Instruct-16bit",
+    "Llama32-3B-16bit": "Llama3.2-3B-Instruct-16bit",
     "Llama2-7B-16bit": "Llama2-7B-16bit",
 }
 

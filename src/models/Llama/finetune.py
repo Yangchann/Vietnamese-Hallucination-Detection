@@ -24,6 +24,7 @@ from transformers import DataCollatorForSeq2Seq, EarlyStoppingCallback
 
 RANDOM_STATE = 42
 
+
 def load_config_module(config_path: str):
     spec = importlib.util.spec_from_file_location(
         "dynamic_config", config_path)
@@ -289,7 +290,8 @@ if should_infer:
     best_model = trainer.model if should_train else model
     best_tokenizer = tokenizer
     ids, pred_labels = run_inference(best_model, best_tokenizer, test_dataset)
-    submit_path = args.submit_path if args.submit_path is not None else DATA_DEFAULTS.get("submit_path", "submit.csv")
+    submit_path = args.submit_path if args.submit_path is not None else DATA_DEFAULTS.get(
+        "submit_path", "submit.csv")
     submit_df = pd.DataFrame({
         "id": ids,
         "predict_label": pred_labels,

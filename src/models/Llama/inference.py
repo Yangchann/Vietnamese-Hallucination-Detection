@@ -28,11 +28,11 @@ parser = argparse.ArgumentParser(
 parser.add_argument("--config", type=str, required=True,
                     help="Path to config.py")
 parser.add_argument("--model_name", type=str,
-                    required=True, help="Model key or HF id")
+                    required=True, help="Model name in config, e.g., Llama32-3B-4bit, Llama32-3B-16bit, Llama2-7B-16bit")
 parser.add_argument("--test_csv", type=str, default=None,
-                    help="Override test csv path")
+                    help="Path to test CSV file")
 parser.add_argument("--submit_path", type=str, default=None,
-                    help="Override submit csv path")
+                    help="Path to submit CSV file")
 args = parser.parse_args()
 
 cfg_module = load_config_module(args.config)
@@ -110,7 +110,7 @@ else:
 test_df = pd.read_csv(TEST_DATA_PATH)
 
 test_df["conversations"] = test_df.apply(build_conversation_test, axis=1)
-test_dataset = Dataset.from_pandas(test_df[["conversations"]])
+test_dataset = Dataset.from_pandas(test_df[["conversations", "id"]])
 test_dataset = standardize_sharegpt(test_dataset).map(
     formatting_prompts_func, batched=True)
 # ======================== INFERENCE ==========================
