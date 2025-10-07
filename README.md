@@ -17,8 +17,11 @@ We fine-tune multiple **Large Language Models (LLMs)** — including **LLaMA** a
 ```
 Vietnamese-Hallucination-Detection
 |-- checkpoints/        # Place downloaded checkpoints here
-|-- data/               # Training and test CSV files
-|-- results/            # Inference outputs and ensembles
+|
+|-- data/   
+| |-- vihallu-train.csv
+| |-- vihallu-private-test.csv
+|
 |-- src/
 | |-- configs/
 | | |-- config_llama.py
@@ -55,39 +58,16 @@ To ensure stable training and inference, we recommend the following setup:
 | **CUDA GPU** | Required | ✅ NVIDIA GPU with CUDA support |
 | **VRAM** | 16GB | 24GB+ (e.g., RTX 4090) |
 | **RAM** | 16GB | 32GB |
-| **Storage** | 200GB | 512GB SSD |
-
-> 💡 Example setup used in this project:
-> **GPU:** NVIDIA RTX 4090 (24GB VRAM)
-> **RAM:** 32GB
-> **Storage:** 512GB SSD
 
 ---
 
 ## 4. Installation
 
-### Step 1: Clone Repository
 ```bash
 git clone https://github.com/Yangchann/Vietnamese-Hallucination-Detection.git
 cd Vietnamese-Hallucination-Detection
-
-```
-
-### Step 2: Create Virtual Environment
-We recommend using a virtual environment or Conda environment. Make sure your PyTorch version is compatible with your local CUDA version.
-
-```bash
-python -m venv .venv
-source .venv/bin/activate        # On Linux / macOS
-# .venv\Scripts\activate         # On Windows
-```
-
-### Step 3: Install Dependencies
-```bash
-pip install -U pip
 pip install -r requirements.txt
 ```
-
 
 ## 5. Checkpoints
 
@@ -99,7 +79,7 @@ gdown --folder https://drive.google.com/drive/u/4/folders/16LOiPlNrREaae_moJL0dN
 
 ```
 
-
+---
 
 ## 6. Fine-tuning and Inference
 Each model directory (under ```src/models/```) contains two main scripts:
@@ -133,18 +113,7 @@ python src/models/llama/inference.py \
 ```
 Note: ```your_model_name``` including ```Llama32-3B-4bit```, L```lama32-3B-16bit```, and ```Llama2-7B-16bit```
 
-
-b) Qwen2.5-7B (`src/models/qwen25-7b`)
-- Finetune
-```powershell
-python src/models/qwen25-7b/finetune.py
-```
-- Inference
-```powershell
-python src/models/qwen25-7b/inference.py
-```
-
-c) Qwen3-4B (`src/models/qwen3-4b`)
+b) Qwen3-4B (`src/models/qwen3-4b`)
 
 - Finetune
 ```powershell
@@ -164,6 +133,18 @@ python src/models/qwen3-4b/inference.py \
 ```
 Note: ```your_model_name``` including ```qwen3-4b-instruct-2507-int8```, ```qwen3-4b-instruct-2507-full```, and ```qwen3-4b-thinking-2507-int8```
 
+
+c) Qwen2.5-7B (`src/models/qwen25-7b`)
+- Finetune
+```powershell
+python src/models/qwen25-7b/finetune.py
+```
+- Inference
+```powershell
+python src/models/qwen25-7b/inference.py
+```
+
+---
 
 ## 7. Ensemble Strategy
 
